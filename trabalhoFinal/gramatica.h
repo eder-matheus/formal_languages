@@ -1,5 +1,7 @@
 #include <cstdlib>
 #include <iostream>
+#include <fstream>
+#include <regex>
 #include <cstdlib>
 #include <vector>
 #include <string>
@@ -14,6 +16,8 @@ typedef struct {
     std::vector<REGRA> regras;
     std::string inicial;
 } GRAMATICA;
+
+void le_gramatica (std::string arquivo, GRAMATICA &gramatica);
 
 #endif /* GRAMATICA_H */
 
