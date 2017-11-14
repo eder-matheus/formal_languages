@@ -11,7 +11,7 @@
 [ Y ]
 [ A ]
 #Inicial					# O simbolo inicial possui uma secao propria, iniciada pela palavra "Inicial"
-[ S ]					# Essa secao possui apenas uma linha com o simbolo inicial entre colchetes.
+[ SAD ]					# Essa secao possui apenas uma linha com o simbolo inicial entre colchetes.
 #Regras					# A ultima secao vem encabecada pela palavra-chave "Regras"
 [ S ] > [ X ] [ Y ] [ Z ]  		# O simbolo de ">", que representa a derivacao.
 [ A ] > [ a ] 
