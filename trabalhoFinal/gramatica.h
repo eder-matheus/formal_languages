@@ -17,7 +17,7 @@ typedef struct {
     std::string inicial;
 } GRAMATICA;
 
-void le_gramatica (std::string arquivo, GRAMATICA &gramatica);
+int le_gramatica (std::string arquivo, GRAMATICA &gramatica);
 
 #endif /* GRAMATICA_H */
 

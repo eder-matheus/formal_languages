@@ -9,8 +9,7 @@
 
 typedef struct {
     std::string variavel; // A variavel poderia ser um char, mas ainda não temos certeza se o nome da variavel possui somente um caractere
-    std::vector<std::vector<std::string>> cadeia_simbolos; // A cadeia de simbolos representa as produções que uma variável tem
-                                                          // Como uma produção pode ter mais de um simbolo, cada produção também é um vector
+    std::vector<std::string> cadeia_simbolos; // A cadeia de simbolos representa uma das possiveis produções que uma variável tem
 } REGRA;
 
 #endif /* REGRAS_H */

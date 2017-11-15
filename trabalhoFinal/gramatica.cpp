@@ -1,9 +1,14 @@
 #include "gramatica.h"
 
-void le_gramatica(std::string arquivo, GRAMATICA& gramatica) {
+int le_gramatica(std::string arquivo, GRAMATICA& gramatica) {
 	std::ifstream entrada;
 
 	entrada.open(arquivo);
+	
+	if (!entrada.is_open()) {
+		std::cout << "Arquivo não encontrado!!!\n";
+		return 0;
+	}
 
 	std::string linha;
 	std::string leitura_atual;
@@ -17,10 +22,8 @@ void le_gramatica(std::string arquivo, GRAMATICA& gramatica) {
 
 	while (!entrada.eof()) {
 		std::getline(entrada, linha);
-
-		if (entrada.eof()) {
+		if (linha.size() == 0)
 			continue;
-		}
 
 		if (linha.find("#Terminais", 0) == 0) {
 			leitura_atual = "terminais";
@@ -51,7 +54,7 @@ void le_gramatica(std::string arquivo, GRAMATICA& gramatica) {
 				}
 				terminal.push_back(linha[i]);
 			}
-			std::cout << terminal << "\n";
+			gramatica.terminais.push_back(terminal);
 			terminal.erase();
 		}
 
@@ -64,7 +67,7 @@ void le_gramatica(std::string arquivo, GRAMATICA& gramatica) {
 				}
 				variavel.push_back(linha[i]);
 			}
-			std::cout << variavel << "\n";
+			gramatica.variaveis.push_back(variavel);
 			variavel.erase();
 		}
 
@@ -77,7 +80,7 @@ void le_gramatica(std::string arquivo, GRAMATICA& gramatica) {
 				}
 				inicial.push_back(linha[i]);
 			}
-			std::cout << inicial << "\n";
+			gramatica.inicial = inicial;
 			inicial.erase();
 		}
 
@@ -85,15 +88,39 @@ void le_gramatica(std::string arquivo, GRAMATICA& gramatica) {
 			for (int i = linha.find("[", 0) + 2; i < linha.size(); i++) {
 				std::string caractere;
 				caractere.push_back(linha[i]);
-				if (caractere.compare(" ") == 0 || caractere.compare("]") == 0) {
+				if (caractere.compare(" ") == 0 || caractere.compare("]") == 0)
 					break;
-				}
 				regra_var.push_back(linha[i]);
 			}
-			regra_var = linha[linha.find("[", 0) + 2];
-			std::cout << regra_var << "\n";
+			
+			std::vector<std::string> producao;
+			
+			contador = linha.find(">", 0) + 1;
+			for (int i = contador; i < linha.size(); i++) {
+				std::string caractere;
+				caractere.push_back(linha[i]);
+				if (caractere.compare(" ") == 0 || caractere.compare("]") == 0 || caractere.compare("[") == 0) {
+					if (regra_prod.size() != 0)
+						producao.push_back(regra_prod);
+					regra_prod.erase();
+					continue;
+				}
+				if (caractere.compare("#") == 0)
+					break;
+
+				regra_prod.push_back(linha[i]);
+			}
+			regra_prod.erase();
+			
+			REGRA regra;
+			
+			regra.variavel = regra_var;
+			regra.cadeia_simbolos = producao;
+			gramatica.regras.push_back(regra);
+			regra_var.erase();
 		}
 	}
 
 	entrada.close();
+	return 1;
 }
