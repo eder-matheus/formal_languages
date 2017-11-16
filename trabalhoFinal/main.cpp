@@ -24,16 +24,17 @@ int main(int argc, char** argv) {
 
 		if (sucesso) {
 			std::cout << "G = (";
+			
 			//Variaveis
 			std::cout << "{ ";
 			for (int i = 0; i < g.variaveis.size(); i++)
-				std::cout << "[ " << g.variaveis[i] << "] ";
+				std::cout << "[ " << g.variaveis[i] << " ] ";
 			std::cout << "}, ";
 
 			//Terminais
 			std::cout << "{ ";
 			for (int i = 0; i < g.terminais.size(); i++)
-				std::cout << "[ " << g.terminais[i] << "] ";
+				std::cout << "[ " << g.terminais[i] << " ] ";
 			std::cout << "}, ";
 
 			std::cout << "P, ";
@@ -58,4 +59,3 @@ int main(int argc, char** argv) {
 
 	return 0;
 }
-

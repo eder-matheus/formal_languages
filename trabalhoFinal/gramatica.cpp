@@ -4,7 +4,7 @@ int le_gramatica(std::string arquivo, GRAMATICA& gramatica) {
 	std::ifstream entrada;
 
 	entrada.open(arquivo);
-	
+
 	if (!entrada.is_open()) {
 		std::cout << "Arquivo não encontrado!!!\n";
 		return 0;
@@ -22,8 +22,6 @@ int le_gramatica(std::string arquivo, GRAMATICA& gramatica) {
 
 	while (!entrada.eof()) {
 		std::getline(entrada, linha);
-		if (linha.size() == 0)
-			continue;
 
 		if (linha.find("#Terminais", 0) == 0) {
 			leitura_atual = "terminais";
@@ -46,6 +44,8 @@ int le_gramatica(std::string arquivo, GRAMATICA& gramatica) {
 		}
 
 		if (leitura_atual.compare("terminais") == 0) {
+			if (linha.find("[", 0) == -1) // Verifica se a linha é vazia ou se não possui elementos da gramatica
+				continue;
 			for (int i = linha.find("[", 0) + 2; i < linha.size(); i++) {
 				std::string caractere;
 				caractere.push_back(linha[i]);
@@ -59,6 +59,8 @@ int le_gramatica(std::string arquivo, GRAMATICA& gramatica) {
 		}
 
 		if (leitura_atual.compare("variaveis") == 0) {
+			if (linha.find("[", 0) == -1) // Verifica se a linha é vazia ou se não possui elementos da gramatica
+				continue;
 			for (int i = linha.find("[", 0) + 2; i < linha.size(); i++) {
 				std::string caractere;
 				caractere.push_back(linha[i]);
@@ -72,6 +74,8 @@ int le_gramatica(std::string arquivo, GRAMATICA& gramatica) {
 		}
 
 		if (leitura_atual.compare("inicial") == 0) {
+			if (linha.find("[", 0) == -1) // Verifica se a linha é vazia ou se não possui elementos da gramatica
+				continue;
 			for (int i = linha.find("[", 0) + 2; i < linha.size(); i++) {
 				std::string caractere;
 				caractere.push_back(linha[i]);
@@ -85,6 +89,9 @@ int le_gramatica(std::string arquivo, GRAMATICA& gramatica) {
 		}
 
 		if (leitura_atual.compare("regras") == 0) {
+			if (linha.find("[", 0) == -1) // Verifica se a linha é vazia ou se não possui elementos da gramatica
+				continue;
+			
 			for (int i = linha.find("[", 0) + 2; i < linha.size(); i++) {
 				std::string caractere;
 				caractere.push_back(linha[i]);
@@ -92,9 +99,9 @@ int le_gramatica(std::string arquivo, GRAMATICA& gramatica) {
 					break;
 				regra_var.push_back(linha[i]);
 			}
-			
+
 			std::vector<std::string> producao;
-			
+
 			contador = linha.find(">", 0) + 1;
 			for (int i = contador; i < linha.size(); i++) {
 				std::string caractere;
@@ -111,9 +118,9 @@ int le_gramatica(std::string arquivo, GRAMATICA& gramatica) {
 				regra_prod.push_back(linha[i]);
 			}
 			regra_prod.erase();
-			
+
 			REGRA regra;
-			
+
 			regra.variavel = regra_var;
 			regra.cadeia_simbolos = producao;
 			gramatica.regras.push_back(regra);
