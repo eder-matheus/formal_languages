@@ -167,6 +167,7 @@ void removeProducoesVazias(GRAMATICA const &G, GRAMATICA &G1) {
 		if (G.regras[i].cadeia_simbolos[0].compare("V") != 0)
 			p1.push_back(G.regras[i]);
 
+	
 }
 
 void removeSimbolosInuteis(GRAMATICA const &G, GRAMATICA &G1) {
