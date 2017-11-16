@@ -91,7 +91,7 @@ int le_gramatica(std::string arquivo, GRAMATICA& gramatica) {
 		if (leitura_atual.compare("regras") == 0) {
 			if (linha.find("[", 0) == -1) // Verifica se a linha é vazia ou se não possui elementos da gramatica
 				continue;
-			
+
 			for (int i = linha.find("[", 0) + 2; i < linha.size(); i++) {
 				std::string caractere;
 				caractere.push_back(linha[i]);
@@ -131,3 +131,83 @@ int le_gramatica(std::string arquivo, GRAMATICA& gramatica) {
 	entrada.close();
 	return 1;
 }
+
+bool encontraVariavel(std::string const &variavel, std::vector<std::string> const &variaveis) {
+	for (int i = 0; i < variaveis.size(); i++)
+		if (variavel.compare(variaveis[i]) == 0)
+			return true;
+	return false;
+}
+
+bool encontraTerminal(std::string const &terminal, std::vector<std::string> const &terminais) {
+	for (int i = 0; i < terminais.size(); i++)
+		if (terminal.compare(terminais[i]) == 0)
+			return true;
+	return false;
+}
+
+void removeProducoesVazias(GRAMATICA const &G, GRAMATICA &G1) {
+	std::vector<std::string> prodVazias;
+	std::vector<REGRA> p1;
+
+	for (int i = 0; i < G.regras.size(); i++) { // Encontra as variaveis que produzem vazio diretamente
+		if (G.regras[i].cadeia_simbolos[0].compare("V") == 0)
+			if (!encontraVariavel(G.regras[i].variavel, prodVazias))
+				prodVazias.push_back(G.regras[i].variavel);
+	}
+
+	for (int i = 0; i < G.regras.size(); i++) { // Encontra as variaveis que produzem vazio indiretamente
+		for (int j = 0; j < G.regras[i].cadeia_simbolos.size(); j++)
+			if (encontraVariavel(G.regras[i].cadeia_simbolos[j], prodVazias))
+				if (!encontraVariavel(G.regras[i].variavel, prodVazias))
+					prodVazias.push_back(G.regras[i].variavel);
+	}
+
+	for (int i = 0; i < G.regras.size(); i++)
+		if (G.regras[i].cadeia_simbolos[0].compare("V") != 0)
+			p1.push_back(G.regras[i]);
+
+}
+
+void removeSimbolosInuteis(GRAMATICA const &G, GRAMATICA &G1) {
+	for (int i = 0; i < G.regras.size(); i++) { // Etapa 1: qualquer variavel gera terminais
+		for (int j = 0; j < G.regras[i].cadeia_simbolos.size(); j++) {
+			if (encontraTerminal(G.regras[i].cadeia_simbolos[j], G.terminais) ||
+				encontraVariavel(G.regras[i].cadeia_simbolos[j], G1.variaveis)) {
+				if (!encontraVariavel(G.regras[i].variavel, G1.variaveis))
+					G1.variaveis.push_back(G.regras[i].variavel);
+				G1.regras.push_back(G.regras[i]);
+			}
+		}
+	}
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
