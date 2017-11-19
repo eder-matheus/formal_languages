@@ -27,34 +27,8 @@ int main(int argc, char** argv) {
 		
 
 		if (sucesso) {
-			std::cout << "G = (";
-			
-			//Variaveis
-			std::cout << "{ ";
-			for (int i = 0; i < g.variaveis.size(); i++)
-				std::cout << "[ " << g.variaveis[i] << " ] ";
-			std::cout << "}, ";
-
-			//Terminais
-			std::cout << "{ ";
-			for (int i = 0; i < g.terminais.size(); i++)
-				std::cout << "[ " << g.terminais[i] << " ] ";
-			std::cout << "}, ";
-
-			std::cout << "P, ";
-
-			//Simbolo inicial
-			std::cout << g.inicial << ")\n";
-
-			std::cout << "onde P:\n";
-
-			//Regras de producao
-			for (int i = 0; i < g.regras.size(); i++) {
-				std::cout << g.regras[i].variavel << " -> ";
-				for (int j = 0; j < g.regras[i].cadeia_simbolos.size(); j++)
-					std::cout << "'" << g.regras[i].cadeia_simbolos[j] << "' ";
-				std::cout << "\n";
-			}
+			imprimeGramatica(g);
+			//removeProducoesUnitarias(g, g1);
 		}
 		
 		std::cout << "Abrir outro arquivo?\n |1 - Sim| |0 - Nao|\n";
