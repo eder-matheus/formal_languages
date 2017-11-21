@@ -295,7 +295,32 @@ void removeProducoesUnitarias(GRAMATICA const &G, GRAMATICA &G1) {
 			}
 			std::cout << "}\n";
 		}	
-	 */
+	*/
+	 
+	std::vector <REGRA> P1;
+	REGRA regra_temp;
+	
+	for(int i = 0; i < G.regras.size(); i++){
+		if(G.regras[i].cadeia_simbolos.size() >= 2 || encontraTerminal(G.regras[i].cadeia_simbolos[0], G.terminais)){
+			P1.push_back(G.regras[i]);
+		}
+	}
+	for(int i = 0; i < G.variaveis.size(); i++){
+		for(int j = 0; j < fechos[i].cadeia_simbolos.size(); j++){
+			for(int k = 0; k < G.regras.size(); k++){
+				if(G.regras[k].variavel == fechos[i].cadeia_simbolos[j]){
+					if(G.regras[k].cadeia_simbolos.size() >= 2  || encontraTerminal(G.regras[k].cadeia_simbolos[0], G.terminais)){
+						regra_temp.variavel = fechos[i].variavel;
+						regra_temp.cadeia_simbolos = G.regras[k].cadeia_simbolos;
+						P1.push_back(regra_temp);
+					}
+				} 
+			}
+		}
+	}
+	G1.regras = P1;
+	
+	
 }
 
 // -----------------------------------------------------------------------------
@@ -350,9 +375,13 @@ bool encontraProducao(REGRA const &regra, std::vector<REGRA> const &regras) {
 	return false;
 }
 
+//-------------------------------------------------------------------------------
 
-
-
+void simplificaGramatica(GRAMATICA const &G, GRAMATICA &G1, GRAMATICA &G2){
+	removeProducoesVazias(G, G1);
+	removeProducoesUnitarias(G1, G1);
+	removeSimbolosInuteis(G1, G2);
+}
 
 
 

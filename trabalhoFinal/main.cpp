@@ -16,6 +16,7 @@ int main(int argc, char** argv) {
 	do {
 		GRAMATICA g;
 		GRAMATICA g1;
+		GRAMATICA g2;
 		std::string arquivo;
 		std::cout << "Escreva o nome do arquivo que contém a gramatica (com a extensao do arquivo):\n";
 		std::cout << "Nome do arquivo: ";
@@ -28,9 +29,8 @@ int main(int argc, char** argv) {
 
 		if (sucesso) {
 			imprimeGramatica(g);
-			removeProducoesVazias(g, g1);
-			imprimeGramatica(g1);
-			//removeProducoesUnitarias(g, g1);
+			simplificaGramatica(g, g1, g2);
+			imprimeGramatica(g1);	
 		}
 		
 		std::cout << "Abrir outro arquivo?\n |1 - Sim| |0 - Nao|\n";

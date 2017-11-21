@@ -50,5 +50,10 @@ bool encontraProducao(REGRA const &regra, std::vector<REGRA> const &regras);
 
 // -----------------------------------------------------------------------------
 
+void simplificaGramatica(GRAMATICA const &G, GRAMATICA &G1, GRAMATICA &G2);
+
+//------------------------------------------------------------------------------
+
+
 #endif /* GRAMATICA_H */
 
