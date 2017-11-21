@@ -22,12 +22,14 @@ int main(int argc, char** argv) {
 		std::cin >> arquivo;
 
 		sucesso = le_gramatica(arquivo, g);
-		removeProducoesVazias(g, g1);
+		std::cout << "\n";
 		//removeSimbolosInuteis(g1, g);
 		
 
 		if (sucesso) {
 			imprimeGramatica(g);
+			removeProducoesVazias(g, g1);
+			imprimeGramatica(g1);
 			//removeProducoesUnitarias(g, g1);
 		}
 		
