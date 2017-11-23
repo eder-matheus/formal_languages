@@ -51,6 +51,10 @@ bool encontraProducao(REGRA const &regra, std::vector<REGRA> const &regras);
 
 // -----------------------------------------------------------------------------
 
+void removeProducoesRepetidas (std::vector<REGRA> &regras);
+
+// -----------------------------------------------------------------------------
+
 void simplificaGramatica(GRAMATICA const &G, GRAMATICA &G1, GRAMATICA &G2);
 
 //------------------------------------------------------------------------------

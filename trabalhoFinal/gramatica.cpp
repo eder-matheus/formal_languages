@@ -169,14 +169,15 @@ void removeProducoesVazias(GRAMATICA const &G, GRAMATICA &G1) {
 	}
 
 	for (int i = 0; i < G.regras.size(); i++) // Exclusao de producoes vazias
-		if (G.regras[i].cadeia_simbolos[0].compare("V") != 0)
+		if (G.regras[i].cadeia_simbolos[0].compare("V") != 0) {
 			p1.push_back(G.regras[i]);
+		}
 
-	int tamanhoP1 = p1.size();
 	int i = 0;
-	std::cout << "Ok\n";
-	for (std::vector<REGRA>::iterator it = p1.begin(); it != p1.end(); it++) { // Producoes adicionais que simulam producoes vazias
-		std::cout << "In loop " << i << std::endl;
+	REGRA novaRegra;
+	
+	// Producoes adicionais que simulam producoes vazias
+	do {//for (std::vector<REGRA>::iterator it = p1.begin(); it != p1.end(); ++it) { // percorre o vetor até  seu final. Esse final muda a cada nova produção inserida
 		for (int j = 0; j < p1[i].cadeia_simbolos.size(); j++) {
 			if (encontraTerminal(p1[i].cadeia_simbolos[j], varProdVazias)) {
 				std::vector<std::string> novaProducao;
@@ -184,35 +185,32 @@ void removeProducoesVazias(GRAMATICA const &G, GRAMATICA &G1) {
 					if (k != j)
 						novaProducao.push_back(p1[i].cadeia_simbolos[k]);
 
-				REGRA novaRegra;
 				novaRegra.variavel = p1[i].variavel;
 				novaRegra.cadeia_simbolos = novaProducao;
+				
+				//std::cout << "Inserindo produção: ";
+				//std::cout << novaRegra.variavel << " -> ";
+				//for (int l = 0; l < novaRegra.cadeia_simbolos.size(); l++)
+				//	std::cout << "'" << novaRegra.cadeia_simbolos[l] << "' ";
+				//std::cout << "\n";
 
-				if (novaProducao.size() <= 0 || encontraProducao(novaRegra, p1))
-					continue;
-				p1.push_back(novaRegra);
+				if (novaProducao.size() > 0 && (!encontraProducao(novaRegra, p1))) {
+					p1.push_back(novaRegra);
+				//	std::cout << "----------Inseriu\n";
+				}// else {
+				//	std::cout << "----------Nao inseriu\n";
+				//}
 			}
 		}
 		if (p1[i].variavel.size() == 0)
 			break;
-		std::cout << p1[i].variavel << " -> ";
-		for (int l = 0; l < p1[i].cadeia_simbolos.size(); l++)
-			std::cout << "'" << p1[i].cadeia_simbolos[l] << "' ";
-		std::cout << "\n";
 		i++;
-	}
+	} while (p1[i].variavel.size() != 0);
 
 	G1.inicial = G.inicial;
 	G1.terminais = G.terminais;
 	G1.variaveis = G.variaveis;
 	G1.regras = p1;
-
-	/*for (int i = 0; i < p1.size(); i++) {
-		std::cout << p1[i].variavel << " -> ";
-		for (int j = 0; j < p1[i].cadeia_simbolos.size(); j++)
-			std::cout << "'" << p1[i].cadeia_simbolos[j] << "'";
-		std::cout << "\n";
-	}*/
 }
 
 // -----------------------------------------------------------------------------
@@ -308,6 +306,7 @@ void removeProducoesUnitarias(GRAMATICA const &G, GRAMATICA &G1) {
 			P1.push_back(G.regras[i]);
 		}
 	}
+	/*
 	for (int i = 0; i < G.variaveis.size(); i++) {
 		for (int j = 0; j < fechos[i].cadeia_simbolos.size(); j++) {
 			for (int k = 0; k < G.regras.size(); k++) {
@@ -315,12 +314,13 @@ void removeProducoesUnitarias(GRAMATICA const &G, GRAMATICA &G1) {
 					if (G.regras[k].cadeia_simbolos.size() >= 2 || encontraTerminal(G.regras[k].cadeia_simbolos[0], G.terminais)) {
 						regra_temp.variavel = fechos[i].variavel;
 						regra_temp.cadeia_simbolos = G.regras[k].cadeia_simbolos;
-						P1.push_back(regra_temp);
+						if (!encontraProducao(regra_temp, P1))
+							P1.push_back(regra_temp);
 					}
 				}
 			}
 		}
-	}
+	}*/
 	G1.regras = P1;
 
 
@@ -370,10 +370,11 @@ bool encontraProducao(REGRA const &regra, std::vector<REGRA> const &regras) {
 			for (int j = 0; j < regras[i].cadeia_simbolos.size(); j++) {
 				if (regra.cadeia_simbolos.size() != regras[i].cadeia_simbolos.size())
 					encontra *= 0;
-				else if (regra.cadeia_simbolos[j].compare(regras[i].cadeia_simbolos[j]) != 0) {
+				else if (regra.cadeia_simbolos[j].compare(regras[i].cadeia_simbolos[j]) != 0)
 					encontra *= 0;
-				}
 			}
+		} else {
+			continue;
 		}
 	}
 	if (encontra)
@@ -382,7 +383,7 @@ bool encontraProducao(REGRA const &regra, std::vector<REGRA> const &regras) {
 		return false;
 }
 
-//-------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void simplificaGramatica(GRAMATICA const &G, GRAMATICA &G1, GRAMATICA &G2) {
 	removeProducoesVazias(G, G1);
