@@ -6,13 +6,18 @@
 [ S ]					
 [ A ]
 [ B ]
+[ C ]
 #Inicial					
 [ S ]					
 #Regras					
-[ S ] > [ A ] [ B ]
-[ A ] > [ a ] [ A ] [ A ]
+[ S ] > [ A ]
+[ S ] > [ A ] [ B ] [ a ]
+[ S ] > [ A ] [ b ] [ A ]
+[ A ] > [ A ] [ a ]
 [ A ] > [ V ] 
-[ B ] > [ b ] [ B ] [ B ]
-[ B ] > [ B ] [ B ] [ B ] [ a ]
-[ B ] > [ V ]
+[ B ] > [ B ] [ b ]
+[ B ] > [ B ] [ C ]
+[ C ] > [ C ] [ B ]
+[ C ] > [ C ] [ A ]
+[ C ] > [ b ] [ B ]
 

@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <vector>
 #include <string>
+#include <cmath>
 #include "regras.h"
 
 #ifndef GRAMATICA_H
