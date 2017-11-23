@@ -193,6 +193,8 @@ void removeProducoesVazias(GRAMATICA const &G, GRAMATICA &G1) {
 				p1.push_back(novaRegra);
 			}
 		}
+		if (p1[i].variavel.size() == 0)
+			break;
 		std::cout << p1[i].variavel << " -> ";
 		for (int l = 0; l < p1[i].cadeia_simbolos.size(); l++)
 			std::cout << "'" << p1[i].cadeia_simbolos[l] << "' ";
@@ -384,8 +386,8 @@ bool encontraProducao(REGRA const &regra, std::vector<REGRA> const &regras) {
 
 void simplificaGramatica(GRAMATICA const &G, GRAMATICA &G1, GRAMATICA &G2) {
 	removeProducoesVazias(G, G1);
-	removeProducoesUnitarias(G1, G1);
-	removeSimbolosInuteis(G1, G2);
+	//removeProducoesUnitarias(G1, G1);
+	//removeSimbolosInuteis(G1, G2);
 }
 
 
