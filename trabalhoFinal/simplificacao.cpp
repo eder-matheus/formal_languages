@@ -76,6 +76,47 @@ void removeSimbolosInuteis(GRAMATICA const &G, GRAMATICA &G1) {
 			}
 		}
 	}
+	
+	//p1 = G1.regras
+	//Etapa 2: qualquer símbolo é atingível a partir do símbolo inicial
+	std::vector<std::string> t2;
+	std::vector<std::string> v2;
+	v2.push_back(G.inicial);
+	
+	int l = 0;
+
+	do{
+		for(int i = 0; i < G.regras.size(); i++){
+			for(int j = 0; j < v2.size(); j++){
+				if(G.regras[i].variavel == v2[j]){
+					for(int k = 0; k < G.regras[i].cadeia_simbolos.size(); k++){
+						if(encontraVariavel(G.regras[i].variavel, v2)){
+							if(!encontraVariavel(G.regras[i].cadeia_simbolos[k], v2)){
+								v2.push_back(G1.regras[i].cadeia_simbolos[k]);
+							}
+							if(!encontraTerminal(G.regras[i].cadeia_simbolos[k], t2)){
+								t2.push_back(G1.regras[i].cadeia_simbolos[k]);
+							}
+						}
+					}
+				}
+			}
+		}
+	l++;	
+	}while(l < t2.size() && l < v2.size() - 1);
+
+	//p2 contem apenas produções que referenciam v2 e t2
+	std::vector<REGRA> p2;
+	for(int i = 0; i < G1.regras.size(); i++){
+		for(int j = 0; j < G1.regras[i].cadeia_simbolos.size(); j++){
+			if((encontraVariavel(G1.regras[i].cadeia_simbolos[j], v2) 
+				|| encontraTerminal(G1.regras[i].cadeia_simbolos[j], t2)) 
+				&& !encontraProducao(G1.regras[i], p2)){
+				p2.push_back(G1.regras[i]);
+			}
+		}
+	}
+	G1.regras = p2;
 }
 
 // -----------------------------------------------------------------------------
@@ -181,6 +222,6 @@ void removeProducoesUnitarias(GRAMATICA const &G, GRAMATICA &G1) {
 
 void simplificaGramatica(GRAMATICA const &G, GRAMATICA &G1, GRAMATICA &G2) {
 	removeProducoesVazias(G, G1);
-	//removeProducoesUnitarias(G1, G1);
-	//removeSimbolosInuteis(G1, G2);
+	removeProducoesUnitarias(G1, G1);
+	removeSimbolosInuteis(G1, G2);
 }

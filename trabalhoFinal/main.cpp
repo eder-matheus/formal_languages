@@ -28,8 +28,9 @@ int main(int argc, char** argv) {
 
 		if (sucesso) {
 			imprimeGramatica(g);
-			removeProducoesVazias(g, g1);
+			//removeProducoesVazias(g, g1);
 			//simplificaGramatica(g, g1, g2);
+			removeSimbolosInuteis(g, g1);
 			imprimeGramatica(g1);	
 		}
 		
