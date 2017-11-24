@@ -31,6 +31,10 @@ bool encontraTerminal(std::string const &terminal, std::vector<std::string> cons
 
 // -----------------------------------------------------------------------------
 
+bool encontraProducao(REGRA const &regra, std::vector<REGRA> const &regras);
+
+// -----------------------------------------------------------------------------
+
 void removeProducoesVazias(GRAMATICA const &G, GRAMATICA &G1);
 
 // -----------------------------------------------------------------------------
@@ -44,14 +48,6 @@ void imprimeGramatica(GRAMATICA const &g);
 // -----------------------------------------------------------------------------
 
 void removeProducoesUnitarias(GRAMATICA const &G, GRAMATICA &G1);
-
-// -----------------------------------------------------------------------------
-
-bool encontraProducao(REGRA const &regra, std::vector<REGRA> const &regras);
-
-// -----------------------------------------------------------------------------
-
-void removeProducoesRepetidas (std::vector<REGRA> &regras);
 
 // -----------------------------------------------------------------------------
 

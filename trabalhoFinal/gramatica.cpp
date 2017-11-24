@@ -42,6 +42,9 @@ int le_gramatica(std::string arquivo, GRAMATICA& gramatica) {
 			leitura_atual = "regras";
 			continue;
 		}
+		
+		if (linha.find("#", 0) == 0)
+			continue;
 
 		if (leitura_atual.compare("terminais") == 0) {
 			if (linha.find("[", 0) == -1) // Verifica se a linha é vazia ou se não possui elementos da gramatica
@@ -152,6 +155,33 @@ bool encontraTerminal(std::string const &terminal, std::vector<std::string> cons
 
 // -----------------------------------------------------------------------------
 
+bool encontraProducao(REGRA const &regra, std::vector<REGRA> const &regras) {
+	int encontra = 0;
+	
+	for (int i = 0; i < regras.size(); i++) {
+		if (regra.variavel.compare(regras[i].variavel) == 0) {
+			encontra = 1;
+			if (regra.cadeia_simbolos.size() != regras[i].cadeia_simbolos.size()) {
+				encontra = 0;
+			} else {
+				for (int j = 0; j < regras[i].cadeia_simbolos.size(); j++) {
+					if (regra.cadeia_simbolos[j].compare(regras[i].cadeia_simbolos[j]) != 0)
+						encontra = 0;
+				}
+			}
+		} else {
+			encontra = 0;
+		}
+		
+		if (encontra == 1)
+			return true;
+	}
+
+	return false;
+}
+
+// -----------------------------------------------------------------------------
+
 void removeProducoesVazias(GRAMATICA const &G, GRAMATICA &G1) {
 	std::vector<std::string> varProdVazias;
 	std::vector<REGRA> p1;
@@ -175,9 +205,9 @@ void removeProducoesVazias(GRAMATICA const &G, GRAMATICA &G1) {
 
 	int i = 0;
 	REGRA novaRegra;
-	
+
 	// Producoes adicionais que simulam producoes vazias
-	do {//for (std::vector<REGRA>::iterator it = p1.begin(); it != p1.end(); ++it) { // percorre o vetor até  seu final. Esse final muda a cada nova produção inserida
+	do { // percorre o vetor até  seu final. Esse final muda a cada nova produção inserida
 		for (int j = 0; j < p1[i].cadeia_simbolos.size(); j++) {
 			if (encontraTerminal(p1[i].cadeia_simbolos[j], varProdVazias)) {
 				std::vector<std::string> novaProducao;
@@ -187,25 +217,16 @@ void removeProducoesVazias(GRAMATICA const &G, GRAMATICA &G1) {
 
 				novaRegra.variavel = p1[i].variavel;
 				novaRegra.cadeia_simbolos = novaProducao;
-				
-				//std::cout << "Inserindo produção: ";
-				//std::cout << novaRegra.variavel << " -> ";
-				//for (int l = 0; l < novaRegra.cadeia_simbolos.size(); l++)
-				//	std::cout << "'" << novaRegra.cadeia_simbolos[l] << "' ";
-				//std::cout << "\n";
 
 				if (novaProducao.size() > 0 && (!encontraProducao(novaRegra, p1))) {
 					p1.push_back(novaRegra);
-				//	std::cout << "----------Inseriu\n";
-				}// else {
-				//	std::cout << "----------Nao inseriu\n";
-				//}
+				}
 			}
 		}
-		if (p1[i].variavel.size() == 0)
-			break;
 		i++;
 	} while (p1[i].variavel.size() != 0);
+
+	//removeProducoesRepetidas(p1);
 
 	G1.inicial = G.inicial;
 	G1.terminais = G.terminais;
@@ -306,7 +327,7 @@ void removeProducoesUnitarias(GRAMATICA const &G, GRAMATICA &G1) {
 			P1.push_back(G.regras[i]);
 		}
 	}
-	/*
+	
 	for (int i = 0; i < G.variaveis.size(); i++) {
 		for (int j = 0; j < fechos[i].cadeia_simbolos.size(); j++) {
 			for (int k = 0; k < G.regras.size(); k++) {
@@ -320,7 +341,8 @@ void removeProducoesUnitarias(GRAMATICA const &G, GRAMATICA &G1) {
 				}
 			}
 		}
-	}*/
+	}
+	
 	G1.regras = P1;
 
 
@@ -361,33 +383,9 @@ void imprimeGramatica(GRAMATICA const &g) {
 
 // -----------------------------------------------------------------------------
 
-bool encontraProducao(REGRA const &regra, std::vector<REGRA> const &regras) {
-	int encontra;
-
-	for (int i = 0; i < regras.size(); i++) {
-		if (regra.variavel.compare(regras[i].variavel) == 0) {
-			encontra = 1;
-			for (int j = 0; j < regras[i].cadeia_simbolos.size(); j++) {
-				if (regra.cadeia_simbolos.size() != regras[i].cadeia_simbolos.size())
-					encontra *= 0;
-				else if (regra.cadeia_simbolos[j].compare(regras[i].cadeia_simbolos[j]) != 0)
-					encontra *= 0;
-			}
-		} else {
-			continue;
-		}
-	}
-	if (encontra)
-		return true;
-	else
-		return false;
-}
-
-// -----------------------------------------------------------------------------
-
 void simplificaGramatica(GRAMATICA const &G, GRAMATICA &G1, GRAMATICA &G2) {
 	removeProducoesVazias(G, G1);
-	//removeProducoesUnitarias(G1, G1);
+	removeProducoesUnitarias(G1, G1);
 	//removeSimbolosInuteis(G1, G2);
 }
 
