@@ -35,23 +35,7 @@ bool encontraProducao(REGRA const &regra, std::vector<REGRA> const &regras);
 
 // -----------------------------------------------------------------------------
 
-void removeProducoesVazias(GRAMATICA const &G, GRAMATICA &G1);
-
-// -----------------------------------------------------------------------------
-
-void removeSimbolosInuteis(GRAMATICA const &G, GRAMATICA &G1);
-
-// -----------------------------------------------------------------------------
-
 void imprimeGramatica(GRAMATICA const &g);
-
-// -----------------------------------------------------------------------------
-
-void removeProducoesUnitarias(GRAMATICA const &G, GRAMATICA &G1);
-
-// -----------------------------------------------------------------------------
-
-void simplificaGramatica(GRAMATICA const &G, GRAMATICA &G1, GRAMATICA &G2);
 
 //------------------------------------------------------------------------------
 

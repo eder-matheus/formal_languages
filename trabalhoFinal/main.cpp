@@ -1,8 +1,7 @@
 #include <cstdlib>
 #include <stdlib.h>
 #include <iostream>
-#include "regras.h"
-#include "gramatica.h"
+#include "simplificacao.h"
 
 using namespace std;
 
