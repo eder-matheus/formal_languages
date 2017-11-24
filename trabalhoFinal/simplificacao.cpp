@@ -25,25 +25,36 @@ void removeProducoesVazias(GRAMATICA const &G, GRAMATICA &G1) {
 	REGRA novaRegra;
 
 	// Producoes adicionais que simulam producoes vazias
+	int p1_tamanho_atual = 0, p1_tam_anterior = 0;
 	do { // percorre o vetor até  seu final. Esse final muda a cada nova produção inserida
-		for (int j = 0; j < p1[i].cadeia_simbolos.size(); j++) {
+		p1_tam_anterior = p1_tamanho_atual;
+		for (int j = 0; j < p1[i].cadeia_simbolos.size(); j++) {//
 			if (encontraTerminal(p1[i].cadeia_simbolos[j], varProdVazias)) {
 				std::vector<std::string> novaProducao;
-				for (int k = 0; k < p1[i].cadeia_simbolos.size(); k++)
-					if (k != j)
+				for (int k = 0; k < p1[i].cadeia_simbolos.size(); k++){
+					if (k != j){
 						novaProducao.push_back(p1[i].cadeia_simbolos[k]);
 
+					}
+				}
 				novaRegra.variavel = p1[i].variavel;
 				novaRegra.cadeia_simbolos = novaProducao;
-
+				p1_tamanho_atual++;
+				/*------------------
+				std::cout << "hi \n";
+				std::cout << novaRegra.variavel << " -> ";
+				for (int j = 0; j < novaRegra.cadeia_simbolos.size(); j++)
+					std::cout << "'" << novaRegra.cadeia_simbolos[j] << "' ";
+				std::cout << "\n";
+				//-------------------*/
 				if (novaProducao.size() > 0 && (!encontraProducao(novaRegra, p1))) {
 					p1.push_back(novaRegra);
 				}
 			}
 		}
 		i++;
-	} while (p1[i].variavel.size() != 0);
-
+	} while (i < p1.size());
+	
 	//removeProducoesRepetidas(p1);
 
 	G1.inicial = G.inicial;
@@ -170,6 +181,6 @@ void removeProducoesUnitarias(GRAMATICA const &G, GRAMATICA &G1) {
 
 void simplificaGramatica(GRAMATICA const &G, GRAMATICA &G1, GRAMATICA &G2) {
 	removeProducoesVazias(G, G1);
-	removeProducoesUnitarias(G1, G1);
+	//removeProducoesUnitarias(G1, G1);
 	//removeSimbolosInuteis(G1, G2);
 }
