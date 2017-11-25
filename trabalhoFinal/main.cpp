@@ -28,6 +28,7 @@ int main(int argc, char** argv) {
 			//simplificaGramatica(g, g1, g2);
 			//removeSimbolosInuteis(g, g1);
 			transformaMaiorDois(g);
+			transformaMaiorTres(g);
 			imprimeGramatica(g);	
 		}
 		
