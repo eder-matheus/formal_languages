@@ -1,6 +1,7 @@
 #Terminais		
 [ a ]				
-[ b ]				 	
+[ b ]
+[ c ]				 	
 #Variaveis	
 [ S ]					
 [ A ]
@@ -15,4 +16,4 @@
 [ S ] > [ a ]
 [ A ] > [ A ] [ a ]
 [ A ] > [ a ]
-[ A ] > [ A ] [ S ] [ A ] [ A ] [ S ]
+[ A ] > [ a ] [ S ] [ A ] [ c ] [ S ]

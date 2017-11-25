@@ -73,3 +73,8 @@ void transformaMaiorTres(GRAMATICA &G) {
 	G.regras = P3;
 	G.variaveis = V3;
 }
+
+void fnc (GRAMATICA &G) {
+	transformaMaiorDois(G);
+	transformaMaiorTres(G);
+}
