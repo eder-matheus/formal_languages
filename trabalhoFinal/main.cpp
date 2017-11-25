@@ -2,12 +2,10 @@
 #include <stdlib.h>
 #include <iostream>
 #include "simplificacao.h"
+#include "fnc.h"
 
 using namespace std;
 
-/*
- * 
- */
 int main(int argc, char** argv) {
 	bool continuar;
 	int sucesso;
@@ -22,16 +20,15 @@ int main(int argc, char** argv) {
 		std::cin >> arquivo;
 
 		sucesso = le_gramatica(arquivo, g);
-		std::cout << "\n";
-		//removeSimbolosInuteis(g1, g);
-		
+		std::cout << "\n";		
 
 		if (sucesso) {
 			imprimeGramatica(g);
 			//removeProducoesVazias(g, g1);
 			//simplificaGramatica(g, g1, g2);
-			removeSimbolosInuteis(g, g1);
-			imprimeGramatica(g1);	
+			//removeSimbolosInuteis(g, g1);
+			transformaMaiorDois(g);
+			imprimeGramatica(g);	
 		}
 		
 		std::cout << "Abrir outro arquivo?\n |1 - Sim| |0 - Nao|\n";
