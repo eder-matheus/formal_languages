@@ -72,7 +72,8 @@ void removeSimbolosInuteis(GRAMATICA const &G, GRAMATICA &G1) {
 				encontraVariavel(G.regras[i].cadeia_simbolos[j], G1.variaveis)) {
 				if (!encontraVariavel(G.regras[i].variavel, G1.variaveis))
 					G1.variaveis.push_back(G.regras[i].variavel);
-				G1.regras.push_back(G.regras[i]);
+				if(!encontraProducao(G.regras[i], G1.regras))
+					G1.regras.push_back(G.regras[i]);
 			}
 		}
 	}
@@ -84,39 +85,54 @@ void removeSimbolosInuteis(GRAMATICA const &G, GRAMATICA &G1) {
 	v2.push_back(G.inicial);
 	
 	int l = 0;
-
 	do{
-		for(int i = 0; i < G.regras.size(); i++){
-			for(int j = 0; j < v2.size(); j++){
-				if(G.regras[i].variavel == v2[j]){
-					for(int k = 0; k < G.regras[i].cadeia_simbolos.size(); k++){
-						if(encontraVariavel(G.regras[i].variavel, v2)){
-							if(!encontraVariavel(G.regras[i].cadeia_simbolos[k], v2)){
-								v2.push_back(G1.regras[i].cadeia_simbolos[k]);
-							}
-							if(!encontraTerminal(G.regras[i].cadeia_simbolos[k], t2)){
-								t2.push_back(G1.regras[i].cadeia_simbolos[k]);
-							}
+		for(int i = 0; i < v2.size(); i++){
+			for(int j = 0; j < G1.regras.size(); j++){
+				if(G1.regras[j].variavel == v2[i]){
+					for(int k = 0; k < G1.regras[j].cadeia_simbolos.size(); k++){
+						if(!encontraVariavel(G1.regras[j].cadeia_simbolos[k], v2) 
+							&& encontraVariavel(G1.regras[j].cadeia_simbolos[k], G1.variaveis)){
+							v2.push_back(G1.regras[j].cadeia_simbolos[k]);
 						}
+						if(!encontraTerminal(G1.regras[j].cadeia_simbolos[k], t2)
+							&& encontraTerminal(G1.regras[j].cadeia_simbolos[k], G.terminais)){
+							t2.push_back(G1.regras[j].cadeia_simbolos[k]);
+						}	
 					}
 				}
 			}
-		}
-	l++;	
-	}while(l < t2.size() && l < v2.size() - 1);
-
+		}	
+		l++;
+	}while(l < t2.size() || l < v2.size());
+	
+	std::cout << "v2:";
+	for(int i = 0; i < v2.size(); i++){
+		std::cout << v2[i];
+	}
+	std::cout << "\n";
+	std::cout << "t2:";
+	for(int i = 0; i < t2.size(); i++){
+		std::cout << t2[i];
+	}
+	std::cout << "\n";
+	
 	//p2 contem apenas produções que referenciam v2 e t2
 	std::vector<REGRA> p2;
+	int producao_valida = 1;
 	for(int i = 0; i < G1.regras.size(); i++){
+		producao_valida = 1;
 		for(int j = 0; j < G1.regras[i].cadeia_simbolos.size(); j++){
-			if((encontraVariavel(G1.regras[i].cadeia_simbolos[j], v2) 
-				|| encontraTerminal(G1.regras[i].cadeia_simbolos[j], t2)) 
-				&& !encontraProducao(G1.regras[i], p2)){
-				p2.push_back(G1.regras[i]);
+			if((!encontraVariavel(G1.regras[i].cadeia_simbolos[j], v2) 
+				&& !encontraTerminal(G1.regras[i].cadeia_simbolos[j], t2))
+				|| !encontraVariavel(G1.regras[i].variavel, v2)){
+				producao_valida = 0;
 			}
 		}
+		if(producao_valida == 1 && !encontraProducao(G1.regras[i], p2)) 
+			p2.push_back(G1.regras[i]);
 	}
 	G1.regras = p2;
+	G1.terminais = t2;
 }
 
 // -----------------------------------------------------------------------------

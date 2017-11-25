@@ -25,10 +25,10 @@ int main(int argc, char** argv) {
 		if (sucesso) {
 			imprimeGramatica(g);
 			//removeProducoesVazias(g, g1);
-			//simplificaGramatica(g, g1, g2);
+			simplificaGramatica(g, g1, g2);
 			//removeSimbolosInuteis(g, g1);
-			fnc(g);
-			imprimeGramatica(g);	
+			//fnc(g);
+			imprimeGramatica(g2);	
 		}
 		
 		std::cout << "Abrir outro arquivo?\n |1 - Sim| |0 - Nao|\n";
