@@ -7,19 +7,19 @@ void transformaMaiorDois(GRAMATICA &G) {
 	std::vector<REGRA> P2 = G.regras;
 	int tamanhoP2 = P2.size();
 
-	for (int i = 0; i < tamanhoP2; i++) {
+	for (int i = 0; i < tamanhoP2; i++) { // Passa por cada producao verificando se existe uma com mais de dois simbolos
 		if (P2[i].cadeia_simbolos.size() >= 2) {
-			for (int j = 0; j < P2[i].cadeia_simbolos.size(); j++) {
-				if (encontraTerminal(P2[i].cadeia_simbolos[j], G.terminais)) {
-					std::string novaVariavel = "T" + P2[i].cadeia_simbolos[j];
-					if (!encontraVariavel(novaVariavel, V2))
+			for (int j = 0; j < P2[i].cadeia_simbolos.size(); j++) { // Se existir, verifica cada simbolo procurando por um terminal
+				if (encontraTerminal(P2[i].cadeia_simbolos[j], G.terminais)) { // Se encontrar algum terminal:
+					std::string novaVariavel = "T" + P2[i].cadeia_simbolos[j]; // Cria uma nova variavel, que vai produzir o terminal encontrado
+					if (!encontraVariavel(novaVariavel, V2)) // Se essa variavel ainda nao foi criada, adiciona a V2
 						V2.push_back(novaVariavel);
-					REGRA novaRegra;
+					REGRA novaRegra; // Variavel novaRegra contem a producao adicional que da origem ao terminal encontrado
 					novaRegra.variavel = novaVariavel;
 					novaRegra.cadeia_simbolos.push_back(P2[i].cadeia_simbolos[j]);
-					if (!encontraProducao(novaRegra, P2))
+					if (!encontraProducao(novaRegra, P2)) // Se essa regra de producao ainda nao tiver sido criada, adiciona a P2
 						P2.push_back(novaRegra);
-					P2[i].cadeia_simbolos[j] = novaVariavel;
+					P2[i].cadeia_simbolos[j] = novaVariavel; // Troca o terminal encontrado na producao pela variavel adicional criada anteriormente
 				}
 			}
 		}
