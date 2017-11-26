@@ -8,29 +8,55 @@ using namespace std;
 
 int main(int argc, char** argv) {
 	bool continuar;
+	int operacao;
 	int sucesso;
 
 	do {
-		GRAMATICA g;
-		GRAMATICA g1;
-		GRAMATICA g2;
+		GRAMATICA g; // Gramatica original
+		GRAMATICA g1; // Gramatica simplificada
+		GRAMATICA g2; // Gramatica na forma normal
+
 		std::string arquivo;
 		std::cout << "Escreva o nome do arquivo que contém a gramatica (com a extensao do arquivo):\n";
 		std::cout << "Nome do arquivo: ";
 		std::cin >> arquivo;
 
 		sucesso = le_gramatica(arquivo, g);
-		std::cout << "\n";		
+		std::cout << "\n";
 
 		if (sucesso) {
-			imprimeGramatica(g);
-			//removeProducoesVazias(g, g1);
-			simplificaGramatica(g, g1, g2);
-			//removeSimbolosInuteis(g, g1);
-			//fnc(g);
-			imprimeGramatica(g2);	
+			std::cout << "Escolha a operação a ser feita sobre a gramatica lida:\n";
+			do {
+				std::cout << "|1 - Mostrar Original| |2 -  Simplificacao| |3 - FNC | |4 - Sair|\n";
+				std::cout << "Operacao: ";
+				std::cin >> operacao;
+				std::cout << "\n";
+				switch (operacao) {
+					case 1:
+						std::cout << "Gramatica Original\n";
+						imprimeGramatica(g);
+						break;
+					case 2:
+						std::cout << "Simplificacao\n";
+						simplificaGramatica(g, g1);
+						imprimeGramatica(g1);
+						break;
+					case 3:
+						g2 = g;
+						std::cout << "Forma Normal de Chomsky\n";
+						fnc(g2);
+						imprimeGramatica(g2);
+						break;
+					case 4:
+						std::cout << "Saindo.......\n";
+						break;
+					default:
+						std::cout << "Operacao invalida!!!\n";
+						break;
+				}
+			} while (operacao != 4);
 		}
-		
+
 		std::cout << "Abrir outro arquivo?\n |1 - Sim| |0 - Nao|\n";
 		std::cin >> continuar;
 	} while (continuar);

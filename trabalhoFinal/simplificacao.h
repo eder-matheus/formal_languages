@@ -15,7 +15,7 @@ void removeProducoesUnitarias(GRAMATICA const &G, GRAMATICA &G1);
 
 // -----------------------------------------------------------------------------
 
-void simplificaGramatica(GRAMATICA const &G, GRAMATICA &G1, GRAMATICA &G2);
+void simplificaGramatica(GRAMATICA const &G, GRAMATICA &G1);
 
 // -----------------------------------------------------------------------------
 
