@@ -69,25 +69,29 @@ void removeSimbolosInuteis(GRAMATICA const &G, GRAMATICA &G1) {
 		}
 	}
 
-	for (int i = 0; i < G.regras.size(); i++) {
-		// Encontra todas as variaveis que produzem um simbolo terminal indiretamente
-		bool produz = 1; // Flag indicando se a variavel analisada produz um terminal.
-		for (int j = 0; j < G.regras[i].cadeia_simbolos.size(); j++) {
-			if (G.regras[i].cadeia_simbolos.size() == 1)
-				continue;
+	int k = 0;
+	do {
+		for (int i = 0; i < G.regras.size(); i++) {
+			// Encontra todas as variaveis que produzem um simbolo terminal indiretamente
+			bool produz = 1; // Flag indicando se a variavel analisada produz um terminal.
+			for (int j = 0; j < G.regras[i].cadeia_simbolos.size(); j++) {
+				if (G.regras[i].cadeia_simbolos.size() == 1)
+					continue;
 
-			if (!encontraTerminal(G.regras[i].cadeia_simbolos[j], G.terminais) &&
-				!encontraVariavel(G.regras[i].cadeia_simbolos[j], G1.variaveis)) {
-				produz = 0; // Quando um simbolo da producao nao e terminal e nem esta nas variaveis produtoras
+				if (!encontraTerminal(G.regras[i].cadeia_simbolos[j], G.terminais) &&
+					!encontraVariavel(G.regras[i].cadeia_simbolos[j], G1.variaveis)) {
+					produz = 0; // Quando um simbolo da producao nao e terminal e nem esta nas variaveis produtoras
+				}
+			}
+			if (produz) { // Se todos os simbolos da producao sao ou geram terminais, a variavel e a producao sao adicionadas
+				if (!encontraVariavel(G.regras[i].variavel, G1.variaveis))
+					G1.variaveis.push_back(G.regras[i].variavel);
+				if (!encontraProducao(G.regras[i], G1.regras))
+					G1.regras.push_back(G.regras[i]);
 			}
 		}
-		if (produz) { // Se todos os simbolos da producao sao ou geram terminais, a variavel e a producao sao adicionadas
-			if (!encontraVariavel(G.regras[i].variavel, G1.variaveis))
-				G1.variaveis.push_back(G.regras[i].variavel);
-			if (!encontraProducao(G.regras[i], G1.regras))
-				G1.regras.push_back(G.regras[i]);
-		}
-	}
+		k++;
+	} while (k < G1.regras.size() || k < G1.variaveis.size());
 
 	//Etapa 2: qualquer símbolo é atingível a partir do símbolo inicial
 	std::vector<std::string> t2;
@@ -98,7 +102,7 @@ void removeSimbolosInuteis(GRAMATICA const &G, GRAMATICA &G1) {
 	do {
 		for (int i = 0; i < v2.size(); i++) {
 			for (int j = 0; j < G1.regras.size(); j++) {
-				if (G1.regras[j].variavel == v2[i]) {
+				if (G1.regras[j].variavel.compare(v2[i]) == 0) {
 					for (int k = 0; k < G1.regras[j].cadeia_simbolos.size(); k++) {
 						if (!encontraVariavel(G1.regras[j].cadeia_simbolos[k], v2)
 							&& encontraVariavel(G1.regras[j].cadeia_simbolos[k], G1.variaveis)) {
@@ -133,6 +137,7 @@ void removeSimbolosInuteis(GRAMATICA const &G, GRAMATICA &G1) {
 	G1.regras = p2;
 	G1.terminais = t2;
 	G1.inicial = G.inicial;
+	G1.variaveis = v2;
 }
 
 // -----------------------------------------------------------------------------
@@ -190,7 +195,6 @@ void removeProducoesUnitarias(GRAMATICA const &G, GRAMATICA &G1) {
 		}
 	}
 
-	std::cout << "Vars size: " << G.variaveis.size() << "\n";
 	for (int i = 0; i < fechos.size(); i++) {
 		for (int j = 0; j < fechos[i].cadeia_simbolos.size(); j++) {
 			for (int k = 0; k < G.regras.size(); k++) {
