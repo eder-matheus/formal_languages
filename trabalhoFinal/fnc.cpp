@@ -75,7 +75,6 @@ void transformaMaiorTres(GRAMATICA &G) {
 }
 
 void fnc (GRAMATICA &G) {
-	simplificaGramatica(G, G);
 	transformaMaiorDois(G);
 	transformaMaiorTres(G);
 }

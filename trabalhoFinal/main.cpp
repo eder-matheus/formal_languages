@@ -42,8 +42,8 @@ int main(int argc, char** argv) {
 						imprimeGramatica(g1);
 						break;
 					case 3:
-						g2 = g;
 						std::cout << "Forma Normal de Chomsky\n";
+						simplificaGramatica(g, g2);
 						fnc(g2);
 						imprimeGramatica(g2);
 						break;
