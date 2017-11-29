@@ -78,3 +78,5 @@ void fnc (GRAMATICA &G) {
 	transformaMaiorDois(G);
 	transformaMaiorTres(G);
 }
+
+// -----------------------------------------------------------------------------

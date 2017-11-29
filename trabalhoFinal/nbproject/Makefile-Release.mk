@@ -35,6 +35,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/earley.o \
 	${OBJECTDIR}/fnc.o \
 	${OBJECTDIR}/gramatica.o \
 	${OBJECTDIR}/main.o \
@@ -65,6 +66,11 @@ LDLIBSOPTIONS=
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/trabalhofinal: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/trabalhofinal ${OBJECTFILES} ${LDLIBSOPTIONS}
+
+${OBJECTDIR}/earley.o: earley.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/earley.o earley.cpp
 
 ${OBJECTDIR}/fnc.o: fnc.cpp
 	${MKDIR} -p ${OBJECTDIR}

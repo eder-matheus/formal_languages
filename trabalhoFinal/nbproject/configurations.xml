@@ -4,6 +4,7 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <itemPath>earley.h</itemPath>
       <itemPath>fnc.h</itemPath>
       <itemPath>gramatica.h</itemPath>
       <itemPath>regras.h</itemPath>
@@ -16,6 +17,7 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <itemPath>earley.cpp</itemPath>
       <itemPath>fnc.cpp</itemPath>
       <itemPath>gramatica.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
@@ -47,6 +49,10 @@
           <standard>8</standard>
         </ccTool>
       </compileType>
+      <item path="earley.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="earley.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="fnc.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="fnc.h" ex="false" tool="3" flavor2="0">
@@ -87,6 +93,10 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
+      <item path="earley.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="earley.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="fnc.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="fnc.h" ex="false" tool="3" flavor2="0">

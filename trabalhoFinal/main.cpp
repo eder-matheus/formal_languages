@@ -3,6 +3,7 @@
 #include <iostream>
 #include "simplificacao.h"
 #include "fnc.h"
+#include "earley.h"
 
 using namespace std;
 
@@ -56,6 +57,22 @@ int main(int argc, char** argv) {
 				}
 			} while (operacao != 4);
 		}
+
+		std::cout << "Algoritmo de Early - Etapa 1:\n";
+		std::vector<REGRA> D0;
+		std::vector<std::vector<REGRA>> Dr;
+		std::string entrada = "a";
+		constroiD0(g2, D0);
+		Dr.push_back(D0);
+		
+		for (int i = 0; i < D0.size(); i++) {
+			std::cout << D0[i].variavel << " -> ";
+			for (int j = 0; j < D0[i].cadeia_simbolos.size(); j++)
+				std::cout << "'" << D0[i].cadeia_simbolos[j] << "' ";
+			std::cout << "\n";
+		}
+		
+		constroiDr(g2, Dr, entrada);
 
 		std::cout << "Abrir outro arquivo?\n |1 - Sim| |0 - Nao|\n";
 		std::cin >> continuar;

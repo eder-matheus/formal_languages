@@ -222,3 +222,5 @@ void simplificaGramatica(GRAMATICA const &G, GRAMATICA &G1) {
 	removeSimbolosInuteis(Gaux, G1);
 
 }
+
+// -----------------------------------------------------------------------------
