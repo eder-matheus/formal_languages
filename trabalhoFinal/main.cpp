@@ -61,18 +61,16 @@ int main(int argc, char** argv) {
 		std::cout << "Algoritmo de Early - Etapa 1:\n";
 		std::vector<REGRA> D0;
 		std::vector<std::vector<REGRA>> Dr;
-		std::string entrada = "a";
+		std::string entrada = "aba abbba abbbb";
+		std::vector<std::string> sentenca;
 		constroiD0(g2, D0);
 		Dr.push_back(D0);
 		
-		for (int i = 0; i < D0.size(); i++) {
-			std::cout << D0[i].variavel << " -> ";
-			for (int j = 0; j < D0[i].cadeia_simbolos.size(); j++)
-				std::cout << "'" << D0[i].cadeia_simbolos[j] << "' ";
-			std::cout << "\n";
-		}
 		
-		constroiDr(g2, Dr, entrada);
+		analisaSentenca(entrada, g2, sentenca);
+		
+		
+		constroiDr(g2, Dr, sentenca);
 
 		std::cout << "Abrir outro arquivo?\n |1 - Sim| |0 - Nao|\n";
 		std::cin >> continuar;
