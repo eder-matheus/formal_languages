@@ -24,5 +24,9 @@ void constroiDr(GRAMATICA const &G, std::vector<std::vector<REGRA>> &Dr, std::ve
 
 // -----------------------------------------------------------------------------
 
+bool aceitaSentenca (std::vector<REGRA> const &Dn, GRAMATICA const &G);
+
+// -----------------------------------------------------------------------------
+
 #endif /* EARLY_H */
 

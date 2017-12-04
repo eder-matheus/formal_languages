@@ -1,7 +1,6 @@
 #Terminais		
 [ a ]				
-[ b ]	
-[ abbba]		 	
+[ b ]			 	
 #Variaveis	
 [ S ]					
 [ A ]
