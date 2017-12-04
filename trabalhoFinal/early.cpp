@@ -109,15 +109,8 @@ void constroiD0(GRAMATICA const &G, std::vector<REGRA> &D0) {
 void constroiDr(GRAMATICA const &G, std::vector<std::vector<REGRA>> &Dr, std::vector<std::string> const &sentenca) {
 	int simboloMarcado;
 	std::vector<REGRA> Di, Daux2;
-	std::cout << "Tamanho sentenca: " << sentenca.size() << "\n";
-
-	std::cout << "Sentenca: ";
-	for (int i = 0; i < sentenca.size(); i++)
-		std::cout << sentenca[i] << " ";
-	std::cout << "\n";
 
 	for (int i = 1; i <= sentenca.size(); i++) {
-		std::cout << "Inicio\n";
 		Di.clear();
 
 		for (int j = 0; j < Dr[i - 1].size(); j++) { // Producoes que geram o simbolo ar
@@ -129,14 +122,6 @@ void constroiDr(GRAMATICA const &G, std::vector<std::vector<REGRA>> &Dr, std::ve
 
 		for (int k = 0; k < Di.size(); k++) {
 			avancaMarcador(Di[k].cadeia_simbolos, -1);
-		}
-
-		for (int k = 0; k < Di.size(); k++) {
-			std::cout << Di[k].variavel << " -> ";
-			for (int l = 0; l < Di[k].cadeia_simbolos.size(); l++) {
-				std::cout << Di[k].cadeia_simbolos[l] << " ";
-			}
-			std::cout << "\n";
 		}
 
 		int sizeAux;
@@ -179,7 +164,6 @@ void constroiDr(GRAMATICA const &G, std::vector<std::vector<REGRA>> &Dr, std::ve
 							regraAux = Dr[s][l];
 							avancaMarcador(regraAux.cadeia_simbolos, -1);
 							if (!encontraProducao(regraAux, Di)) {
-								std::cout << "Adicionado\n";
 								Di.push_back(regraAux);
 							}
 						}
@@ -190,20 +174,7 @@ void constroiDr(GRAMATICA const &G, std::vector<std::vector<REGRA>> &Dr, std::ve
 			sizeAux++;
 		} while (sizeAux < Di.size());
 
-		std::cout << "Fim do loop " << i << "\n";
-
 		Dr.push_back(Di);
-	}
-
-	std::cout << "Dr size: " << Dr.size() << "\n";
-	for (int k = 0; k < Dr.size(); k++) {
-		std::cout << "D" << k << "\n";
-		for (int i = 0; i < Dr[k].size(); i++) {
-			std::cout << Dr[k][i].variavel << " -> ";
-			for (int j = 0; j < Dr[k][i].cadeia_simbolos.size(); j++)
-				std::cout << "'" << Dr[k][i].cadeia_simbolos[j] << "' ";
-			std::cout << "\n";
-		}
 	}
 }
 
@@ -219,6 +190,38 @@ bool aceitaSentenca(std::vector<REGRA> const &Dn, GRAMATICA const &G) {
 	}
 
 	return false;
+}
+
+// -----------------------------------------------------------------------------
+
+void early(std::string const &entrada, GRAMATICA const &G) {
+	std::vector<REGRA> D0;
+	std::vector<std::vector < REGRA>> Dr;
+	std::vector<std::string> sentenca;
+
+	constroiD0(G, D0);
+	Dr.push_back(D0);
+
+	analisaSentenca(entrada, G, sentenca);
+	constroiDr(G, Dr, sentenca);
+
+	if (aceitaSentenca(Dr.back(), G)) {
+		std::cout << "Sentenca reconhecida\n";
+		std::cout << "\n";
+
+		for (int k = 0; k < Dr.size(); k++) {
+			std::cout << "D" << k << "\n";
+			for (int i = 0; i < Dr[k].size(); i++) {
+				std::cout << Dr[k][i].variavel << " -> ";
+				for (int j = 0; j < Dr[k][i].cadeia_simbolos.size(); j++)
+					std::cout << "'" << Dr[k][i].cadeia_simbolos[j] << "' ";
+				std::cout << "\n";
+			}
+			std::cout << "\n";
+		}
+	} else {
+		std::cout << "Sentenca rejeitada\n";
+	}
 }
 
 // -----------------------------------------------------------------------------

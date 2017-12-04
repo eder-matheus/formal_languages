@@ -28,5 +28,9 @@ bool aceitaSentenca (std::vector<REGRA> const &Dn, GRAMATICA const &G);
 
 // -----------------------------------------------------------------------------
 
+void early(std::string const &entrada, GRAMATICA const &G);
+
+// -----------------------------------------------------------------------------
+
 #endif /* EARLY_H */
 

@@ -58,19 +58,9 @@ int main(int argc, char** argv) {
 			} while (operacao != 4);
 		}
 
-		std::cout << "Algoritmo de Early - Etapa 1:\n";
-		std::vector<REGRA> D0;
-		std::vector<std::vector<REGRA>> Dr;
-		std::string entrada = "abbba";
-		std::vector<std::string> sentenca;
-		constroiD0(g2, D0);		
-		Dr.push_back(D0);		
-		analisaSentenca(entrada, g2, sentenca);		
-		constroiDr(g2, Dr, sentenca);
-		if (aceitaSentenca(Dr.back(), g2))
-			std::cout << "Sentenca aceita\n";
-		else
-			std::cout << "Sentenca rejeitada\n";
+		std::cout << "Algoritmo de Early\n";
+		std::string entrada = "abbbba";
+		early(entrada, g2);
 
 		std::cout << "Abrir outro arquivo?\n |1 - Sim| |0 - Nao|\n";
 		std::cin >> continuar;
