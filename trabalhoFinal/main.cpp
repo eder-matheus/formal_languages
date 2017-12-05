@@ -16,8 +16,10 @@ int main(int argc, char** argv) {
 		GRAMATICA g; // Gramatica original
 		GRAMATICA g1; // Gramatica simplificada
 		GRAMATICA g2; // Gramatica na forma normal
+		GRAMATICA g3; // Gramatica usada para o algoritmo de Early
 
 		std::string arquivo;
+		std::string entrada;
 		std::cout << "Escreva o nome do arquivo que contém a gramatica (com a extensao do arquivo):\n";
 		std::cout << "Nome do arquivo: ";
 		std::cin >> arquivo;
@@ -28,10 +30,14 @@ int main(int argc, char** argv) {
 		if (sucesso) {
 			std::cout << "Escolha a operação a ser feita sobre a gramatica lida:\n";
 			do {
-				std::cout << "|1 - Mostrar Original| |2 -  Simplificacao| |3 - FNC | |4 - Sair|\n";
+				std::cout << "|1 - Mostrar Original| |2 -  Simplificacao| |3 - FNC | |4 - Early| |5 - Sair|\n";
 				std::cout << "Operacao: ";
 				std::cin >> operacao;
 				std::cout << "\n";
+				if (operacao < 1 || operacao > 5) {
+					std::cout << "Operacao invalida!!!\n";
+					continue;
+				}
 				switch (operacao) {
 					case 1:
 						std::cout << "Gramatica Original\n";
@@ -49,18 +55,20 @@ int main(int argc, char** argv) {
 						imprimeGramatica(g2);
 						break;
 					case 4:
+						std::cout << "Algoritmo de Early\n";
+						std::cout << "\n---- Digite a senteca a ser analisada: ";
+						std::cin >> entrada;
+						std::cout << "\n";
+						simplificaGramatica(g, g3);
+						fnc(g3);
+						early(entrada, g);
+						break;
+					case 5:
 						std::cout << "Saindo.......\n";
 						break;
-					default:
-						std::cout << "Operacao invalida!!!\n";
-						break;
 				}
-			} while (operacao != 4);
+			} while (operacao != 5);
 		}
-
-		std::cout << "Algoritmo de Early\n";
-		std::string entrada = "abbbba";
-		early(entrada, g2);
 
 		std::cout << "Abrir outro arquivo?\n |1 - Sim| |0 - Nao|\n";
 		std::cin >> continuar;

@@ -37,8 +37,10 @@ void analisaSentenca(std::string const &sentenca, GRAMATICA const &G, std::vecto
 
 int encontraMarcador(std::vector<std::string> const &producao) {
 	int i = 0;
+	std::string marcador;
+	marcador.push_back(char(46));
 
-	while (i < producao.size() && producao[i].compare("*") != 0)
+	while (i < producao.size() && producao[i].compare(marcador) != 0)
 		i++;
 
 	if (i < producao.size())
@@ -50,18 +52,20 @@ int encontraMarcador(std::vector<std::string> const &producao) {
 // -----------------------------------------------------------------------------
 
 void avancaMarcador(std::vector<std::string> &producao, int conjunto) {
-	int marcador = encontraMarcador(producao);
+	int m = encontraMarcador(producao);
 	std::string cjto = producao.back();
+	std::string marcador;
+	marcador.push_back(char(46));
 
-	if (marcador != -1) {
-		producao[marcador] = producao[marcador + 1];
-		producao[marcador + 1] = "*";
+	if (m != -1) {
+		producao[m] = producao[m + 1];
+		producao[m + 1] = marcador;
 	} else {
 		std::vector<std::string> producaoAux;
 
 		producaoAux = producao;
 		producao.clear();
-		producao.push_back("*");
+		producao.push_back(marcador);
 		for (int k = 0; k < producaoAux.size(); k++) {
 			producao.push_back(producaoAux[k]);
 		}
@@ -124,14 +128,12 @@ void constroiDr(GRAMATICA const &G, std::vector<std::vector<REGRA>> &Dr, std::ve
 			avancaMarcador(Di[k].cadeia_simbolos, -1);
 		}
 
-		int sizeAux;
+		int sizeAux = 0;
 
 		do {
-			sizeAux = Di.size();
 			REGRA regraAux;
 			for (int k = 0; k < Di.size(); k++) {
 				simboloMarcado = encontraMarcador(Di[k].cadeia_simbolos) + 1;
-				//std::cout << "Simbolo marcado: " << Di[k].cadeia_simbolos[simboloMarcado] << "\n";
 				for (int l = 0; l < G.regras.size(); l++) { // Producoes que podem gerar o proximo simbolo
 					if (Di[k].cadeia_simbolos[simboloMarcado].compare(G.regras[l].variavel) == 0) {
 						regraAux = G.regras[l];
@@ -152,11 +154,8 @@ void constroiDr(GRAMATICA const &G, std::vector<std::vector<REGRA>> &Dr, std::ve
 					for (int l = 1; l < Di[k].cadeia_simbolos[simboloMarcado].size(); l++) {
 						conjunto.push_back(Di[k].cadeia_simbolos[simboloMarcado][l]);
 					}
-
-					int s = 0;
-					for (int l = 0; l < conjunto.size(); l++) { // Identifica o conjunto de producoes cujo a producao esta inserida
-						s += (int) conjunto[conjunto.size() - 1 - l] - 48;
-					}
+					std::string::size_type sz;
+					int s = std::stoi(conjunto, &sz);
 
 					for (int l = 0; l < Dr[s].size(); l++) {
 						simboloMarcado = encontraMarcador(Dr[s][l].cadeia_simbolos) + 1;
@@ -205,20 +204,20 @@ void early(std::string const &entrada, GRAMATICA const &G) {
 	analisaSentenca(entrada, G, sentenca);
 	constroiDr(G, Dr, sentenca);
 
+	for (int k = 0; k < Dr.size(); k++) {
+		std::cout << "D" << k << "\n";
+		for (int i = 0; i < Dr[k].size(); i++) {
+			std::cout << Dr[k][i].variavel << " -> ";
+			for (int j = 0; j < Dr[k][i].cadeia_simbolos.size(); j++)
+				std::cout << "'" << Dr[k][i].cadeia_simbolos[j] << "' ";
+			std::cout << "\n";
+		}
+		std::cout << "\n";
+	}
+
 	if (aceitaSentenca(Dr.back(), G)) {
 		std::cout << "Sentenca reconhecida\n";
 		std::cout << "\n";
-
-		for (int k = 0; k < Dr.size(); k++) {
-			std::cout << "D" << k << "\n";
-			for (int i = 0; i < Dr[k].size(); i++) {
-				std::cout << Dr[k][i].variavel << " -> ";
-				for (int j = 0; j < Dr[k][i].cadeia_simbolos.size(); j++)
-					std::cout << "'" << Dr[k][i].cadeia_simbolos[j] << "' ";
-				std::cout << "\n";
-			}
-			std::cout << "\n";
-		}
 	} else {
 		std::cout << "Sentenca rejeitada\n";
 	}
