@@ -44,26 +44,27 @@ void transformaMaiorTres(GRAMATICA &G) {
 			regra.cadeia_simbolos = P3[i].cadeia_simbolos;
 
 			P3.erase(P3.begin() + i); // Exclui a regra a ser modificada
+			i--;
 
 			std::string buffer = std::to_string(numVar);
 			std::string novaVariavel = "V" + buffer; // Nomenclatura da variavel adicional 
-			
+
 			std::vector<std::string> novaProducao;
 			for (int j = 1; j < regra.cadeia_simbolos.size(); j++) {
 				novaProducao.push_back(regra.cadeia_simbolos[j]);
 			} // Criacao da producao adicional
-			
+
 			REGRA novaRegra; // Variavel novaRegra usada para guardar a producao adicional criada pelo algoritmo
 			novaRegra.variavel = novaVariavel;
 			novaRegra.cadeia_simbolos = novaProducao;
-			
+
 			regra.cadeia_simbolos.erase(regra.cadeia_simbolos.begin() + 1, regra.cadeia_simbolos.end());
 			regra.cadeia_simbolos.push_back(novaVariavel); // Alteracao da regra original para ela conter somente duas variaveis no seu corpo
 
 			P3.push_back(regra);
 			P3.push_back(novaRegra);
 			V3.push_back(novaVariavel);
-			
+
 			numVar++;
 		}
 
@@ -74,7 +75,7 @@ void transformaMaiorTres(GRAMATICA &G) {
 	G.variaveis = V3;
 }
 
-void fnc (GRAMATICA &G) {
+void fnc(GRAMATICA &G) {
 	transformaMaiorDois(G);
 	transformaMaiorTres(G);
 }
