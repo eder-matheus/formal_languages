@@ -20,6 +20,8 @@ int main(int argc, char** argv) {
 
 		std::string arquivo;
 		std::string entrada;
+		std::string limpaBuffer;
+		
 		std::cout << "Escreva o nome do arquivo que contém a gramatica (com a extensao do arquivo):\n";
 		std::cout << "Nome do arquivo: ";
 		std::cin >> arquivo;
@@ -57,7 +59,9 @@ int main(int argc, char** argv) {
 					case 4:
 						std::cout << "Algoritmo de Early\n";
 						std::cout << "\n---- Digite a senteca a ser analisada: ";
-						std::cin >> entrada;
+						entrada.clear();
+						std::getline(std::cin, limpaBuffer);
+						std::getline(std::cin, entrada);
 						std::cout << "\n";
 						simplificaGramatica(g, g3);
 						fnc(g3);
