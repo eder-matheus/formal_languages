@@ -1,6 +1,6 @@
 #Terminais		
-[ b ]				
-[ a ]				 	
+[ a ]				
+[ b ]				 	
 #Variaveis	
 [ S ]					
 [ A ]
@@ -8,10 +8,8 @@
 #Inicial					
 [ S ]					
 #Regras					
-[ S ] > [ A ]
-[ A ] > [ a ] [ B ]
-[ A ] > [ b ] [ B ]
-[ B ] > [ b ] [ A ]
-[ B ] > [ a ] [ A ]
-[ A ] > [ V ]
-#[ B ] > [ V ]
+[ S ] > [ A ] [ B ]
+[ A ] > [ B ] [ A ]
+[ A ] > [ a ]
+[ B ] > [ B ] [ A ]
+[ B ] > [ b ]

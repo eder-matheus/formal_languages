@@ -112,7 +112,7 @@ void constroiD0(GRAMATICA const &G, std::vector<REGRA> &D0) {
 
 void constroiDr(GRAMATICA const &G, std::vector<std::vector<REGRA>> &Dr, std::vector<std::string> const &sentenca) {
 	int simboloMarcado;
-	std::vector<REGRA> Di, Daux2;
+	std::vector<REGRA> Di;
 
 	for (int i = 1; i <= sentenca.size(); i++) {
 		Di.clear();

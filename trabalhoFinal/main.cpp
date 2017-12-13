@@ -65,7 +65,7 @@ int main(int argc, char** argv) {
 						std::cout << "\n";
 						simplificaGramatica(g, g3);
 						fnc(g3);
-						early(entrada, g3);
+						early(entrada, g);
 						break;
 					case 5:
 						std::cout << "Saindo.......\n";
