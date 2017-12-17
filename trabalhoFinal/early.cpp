@@ -282,13 +282,13 @@ bool aceitaSentenca(std::vector<REGRA> const &Dn, GRAMATICA const &G) {
 // -----------------------------------------------------------------------------
 
 void arvoreDeDerivacao(std::vector<std::vector<REGRA>> const &Dr, std::vector<std::vector<int>> &ponteiros, GRAMATICA const &G) {
-	int qtdRegras = 0;
 	int idRegra = 0;
 	int idRegraAux;
 	int simboloMarcado;
 	std::vector<REGRA> regras;
 	std::vector<int> idsRegras;
 	std::vector<std::string> terminais;
+	std::vector<int> reducoes;
 
 	for (int i = 0; i < Dr.size(); i++)
 		for (int j = 0; j < Dr[i].size(); j++)
@@ -301,60 +301,62 @@ void arvoreDeDerivacao(std::vector<std::vector<REGRA>> const &Dr, std::vector<st
 	for (int i = 0; i < Dr[Dr.size() - 1].size(); i++) {
 		simboloMarcado = encontraMarcador(Dr[Dr.size() - 1][i].cadeia_simbolos) + 1;
 		if (Dr[Dr.size() - 1][i].variavel.compare(G.inicial) == 0 && Dr[Dr.size() - 1][i].cadeia_simbolos[simboloMarcado].compare("/0") == 0) {
-			break;
+			reducoes.push_back(idRegra);
 		} else {
 			idRegra++;
 		}
 	}
-	idsRegras.push_back(idRegra);
-	std::cout << regras[idsRegras[0]].variavel << "(S" << idsRegras[0] << ")\n";
 
-	int j = 0;
-	while (j < idsRegras.size()) {
-		int i = j;
-		int numRegras = idsRegras.size();
+	for (int l = 0; l < reducoes.size(); l++) {
+		idsRegras.push_back(reducoes[l]);
+		std::cout << regras[idsRegras[0]].variavel << "(S" << idsRegras[0] << ")\n";
 
-		while (i < numRegras) {
-			if (ponteiros[idsRegras[i]].size() == 1) {
-				idRegraAux = ponteiros[idsRegras[i]][0];
-				if (idRegraAux != -1) {
-					std::cout << regras[idRegraAux].variavel << "(S" << idRegraAux << ") |";
-					idsRegras.push_back(idRegraAux);
-					if (encontraTerminal(regras[idRegraAux].cadeia_simbolos[0], G.terminais) && regras[idRegraAux].cadeia_simbolos.size() == 3)
-						terminais.push_back(regras[idRegraAux].cadeia_simbolos[0]);
-				} else {
-					std::cout << terminais[0] << "| ";
-					terminais.erase(terminais.begin() + 0);
-				}
-			} else {
-				idRegraAux = ponteiros[idsRegras[i]][0];
-				if (idRegraAux != -1) {
-					std::cout << regras[idRegraAux].variavel << "(S" << idRegraAux << ")    ";
-					idsRegras.push_back(idRegraAux);
-					if (encontraTerminal(regras[idRegraAux].cadeia_simbolos[0], G.terminais) && regras[idRegraAux].cadeia_simbolos.size() == 3)
-						terminais.push_back(regras[idRegraAux].cadeia_simbolos[0]);
-				} else {
-					std::cout << terminais[0] << "| ";
-					terminais.erase(terminais.begin() + 0);
-				}
+		int j = 0;
+		while (j < idsRegras.size()) {
+			int i = j;
+			int numRegras = idsRegras.size();
 
-				idRegraAux = ponteiros[idsRegras[i]][1];
-				if (idRegraAux != -1) {
-					std::cout << regras[idRegraAux].variavel << "(S" << idRegraAux << ") |";
-					idsRegras.push_back(idRegraAux);
-					if (encontraTerminal(regras[idRegraAux].cadeia_simbolos[0], G.terminais) && regras[idRegraAux].cadeia_simbolos.size() == 3)
-						terminais.push_back(regras[idRegraAux].cadeia_simbolos[0]);
+			while (i < numRegras) {
+				if (ponteiros[idsRegras[i]].size() == 1) {
+					idRegraAux = ponteiros[idsRegras[i]][0];
+					if (idRegraAux != -1) {
+						std::cout << regras[idRegraAux].variavel << "(S" << idRegraAux << ") |";
+						idsRegras.push_back(idRegraAux);
+						if (encontraTerminal(regras[idRegraAux].cadeia_simbolos[0], G.terminais) && regras[idRegraAux].cadeia_simbolos.size() == 3)
+							terminais.push_back(regras[idRegraAux].cadeia_simbolos[0]);
+					} else {
+						std::cout << terminais[0] << "| ";
+						terminais.erase(terminais.begin() + 0);
+					}
 				} else {
-					std::cout << terminais[0] << "| ";
-					terminais.erase(terminais.begin() + 0);
+					idRegraAux = ponteiros[idsRegras[i]][0];
+					if (idRegraAux != -1) {
+						std::cout << regras[idRegraAux].variavel << "(S" << idRegraAux << ")    ";
+						idsRegras.push_back(idRegraAux);
+						if (encontraTerminal(regras[idRegraAux].cadeia_simbolos[0], G.terminais) && regras[idRegraAux].cadeia_simbolos.size() == 3)
+							terminais.push_back(regras[idRegraAux].cadeia_simbolos[0]);
+					} else {
+						std::cout << terminais[0] << "| ";
+						terminais.erase(terminais.begin() + 0);
+					}
+
+					idRegraAux = ponteiros[idsRegras[i]][1];
+					if (idRegraAux != -1) {
+						std::cout << regras[idRegraAux].variavel << "(S" << idRegraAux << ") |";
+						idsRegras.push_back(idRegraAux);
+						if (encontraTerminal(regras[idRegraAux].cadeia_simbolos[0], G.terminais) && regras[idRegraAux].cadeia_simbolos.size() == 3)
+							terminais.push_back(regras[idRegraAux].cadeia_simbolos[0]);
+					} else {
+						std::cout << terminais[0] << "| ";
+						terminais.erase(terminais.begin() + 0);
+					}
 				}
+				i++;
+				j++;
 			}
-			i++;
-			j++;
+			std::cout << "\n";
 		}
-		std::cout << "\n";
 	}
-
 
 	std::cout << "\n";
 }
