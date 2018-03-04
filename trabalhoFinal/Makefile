@@ -1,8 +1,8 @@
 CC=g++ -std=c++11
 
-all: clean binario clear
+all: directory clean binario clear
 
-run: clean binario clear execute
+run: directory clean binario clear execute
 
 binario: regras.o early.o gramatica.o simplificacao.o fnc.o main.o
 	$(CC) -o build/binario main.o regras.o early.o gramatica.o simplificacao.o fnc.o
@@ -31,6 +31,10 @@ clear:
 clean:
 	rm -rf *.o
 	rm -rf build/binario
+	rm -rf build
 
 execute: 
 	./build/binario
+
+directory:
+	mkdir -p build
