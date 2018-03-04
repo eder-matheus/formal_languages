@@ -1,11 +1,11 @@
 CC=g++ -std=c++11
 
-all: directory clean binario clear
+all: clean directory binario clear
 
-run: directory clean binario clear execute
+run: clean directory binario clear execute
 
-binario: regras.o early.o gramatica.o simplificacao.o fnc.o main.o
-	$(CC) -o build/binario main.o regras.o early.o gramatica.o simplificacao.o fnc.o
+binario: simplificacao.o fnc.o regras.o early.o gramatica.o  main.o
+	$(CC) -o build/binario fnc.o gramatica.o main.o regras.o early.o simplificacao.o
 
 regras.o: regras.cpp regras.h
 	$(CC) -c regras.cpp
@@ -37,4 +37,4 @@ execute:
 	./build/binario
 
 directory:
-	mkdir -p build
+	mkdir build
